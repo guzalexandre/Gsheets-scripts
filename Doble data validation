@@ -1,0 +1,18 @@
+//Create a list in a tab of SS named Lists in the first row and set as range for data validation
+
+function onEdit(){
+   
+  var ss = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var datass = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Lists");
+  
+  var activeCell = ss.getActiveCell();
+  if(activeCell.getColumn() == 1 && activeCell.getRow() > 1) {
+ 
+    var Category = datass.getRange(1, 1, 1, 6).getValues();
+    var CategoryIndex= Category[0].indexOf(activeCell.getValue())+1;
+    
+    
+    
+    var validationRange = datass.getRange(3, CategoryIndex, datass.getLastRow());
+    var validationRule = SpreadsheetApp.newDataValidation().requireValueInRange(validationRange).build();
+    activeCell.offset(0, 1).setDataValidation(validationRule);
